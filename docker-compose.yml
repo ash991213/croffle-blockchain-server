@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+    blockchain-server:
+        build:
+            context: .
+            args:
+                ENVIRONMENT: ${ENVIRONMENT}
+        ports:
+            - '8081:8081'
+        environment:
+            MYSQL_HOST: host.docker.internal
+        volumes:
+            - /Users/kimsanghun/Git/Suhwan/croffle/croffle-blockchain-server/logs:/usr/src/app/logs
