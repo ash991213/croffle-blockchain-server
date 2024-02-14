@@ -30,3 +30,6 @@ export const GET_TOKEN_PRICE_FAILED: Res = { code: 3004, message: '토큰 가격
 export const GET_TRANSACTION_DETAIL_FAILED: Res = { code: 3005, message: '거래 정보를 조회하는데 실패하였습니다.' };
 export const GET_TOKEN_DEPOSITS_FAILED: Res = { code: 3006, message: '토큰 입금 내역을 조회하는데 실패하였습니다.' };
 export const TOKEN_WITHDRAW_FAILED: Res = { code: 3007, message: '토큰 출금을 실패하였습니다.' };
+
+// * aws sqs
+export const AWS_SEND_MESSAGE_FAILED: Res = { code: 4001, message: 'AWS SQS에 메시지를 전송하는 데 실패하였습니다.' };
