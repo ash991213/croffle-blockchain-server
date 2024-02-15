@@ -27,6 +27,8 @@ export class DepositService {
      * @param {number} storeDepositListReqDTO.maticPrice - The current price of Matic in KRW.
      */
     public async storeDepositList(storeDepositListReqDTO: StoreDepositListReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.storeDepositList.name, storeDepositListReqDTO);
+
         storeDepositListReqDTO.depositList = storeDepositListReqDTO.depositList.map((deposit) =>
             plainToInstance(DepositList, { ...deposit, krw_amount: Number(deposit.amount) * storeDepositListReqDTO.maticPrice, token_price: storeDepositListReqDTO.maticPrice }, { exposeUnsetFields: false }),
         );
@@ -46,6 +48,7 @@ export class DepositService {
      * @returns {DepositList[]} GetPendingDepositsResDTO.pendingDepositList - List of deposits that are currently pending.
      */
     public async getPendingDeposits(): Promise<GetPendingDepositsResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getPendingDeposits.name);
         try {
             const pendingDepositList: DepositList[] = await this.depositList.getPendingDeposits();
             return plainToInstance(GetPendingDepositsResDTO, { pendingDepositList }, { exposeUnsetFields: false });
@@ -62,6 +65,7 @@ export class DepositService {
      * @returns {string[]} GetDepositTransactionIdsResDTO.transactionsIds - An array of strings, each representing a transaction ID of a pending deposit.
      */
     public async getPendingDepositTransactionIds(): Promise<GetPendingDepositTransactionIdsResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getPendingDepositTransactionIds.name);
         try {
             const depositTransactionIds: DepositList[] = await this.depositList.getPendingDepositTransactionIds();
             return plainToInstance(GetPendingDepositTransactionIdsResDTO, { transactionsIds: depositTransactionIds }, { exposeUnsetFields: false });
@@ -82,6 +86,8 @@ export class DepositService {
      * @returns {DepositList[]} RemoveDuplicateTransactionIdsResDTO.filterDepositList - List of deposits after removing ones with duplicate transaction IDs.
      */
     public removeDuplicateTransactionIds(removeDuplicateTransactionIdsReqDTO: RemoveDuplicateTransactionIdsReqDTO): RemoveDuplicateTransactionIdsResDTO {
+        this.logger.logMethodEntry(this.constructor.name, this.removeDuplicateTransactionIds.name, removeDuplicateTransactionIdsReqDTO);
+
         const filterDepositList: DepositList[] = [];
 
         for (let i = 0; i < removeDuplicateTransactionIdsReqDTO.depositList.length; i++) {
@@ -112,6 +118,7 @@ export class DepositService {
      * @returns {GetTotalDepositAmountForTokensResDTO}
      */
     public async getTotalDepositAmountForTokens(getTotalDepositAmountForTokensReqDTO: GetTotalDepositAmountForTokensReqDTO): Promise<GetTotalDepositAmountForTokensResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getTotalDepositAmountForTokens.name, getTotalDepositAmountForTokensReqDTO);
         try {
             const depositSummary = await this.depositList.getTotalDepositAmountForTokensByAddress(getTotalDepositAmountForTokensReqDTO);
             return plainToInstance(GetTotalDepositAmountForTokensResDTO, depositSummary, { exposeUnsetFields: false });
@@ -128,6 +135,7 @@ export class DepositService {
      * @param {number} updateDepositStatusReqDTO.sq - The sequence number of the deposit to be updated.
      */
     public async updateDepositStatus(updateDepositStatusReqDTO: UpdateDepositStatusReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.updateDepositStatus.name, updateDepositStatusReqDTO);
         try {
             await this.depositList.updateDepositStatus(updateDepositStatusReqDTO);
         } catch (error) {
