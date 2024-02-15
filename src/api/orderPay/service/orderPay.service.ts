@@ -16,6 +16,7 @@ export class OrderPayService {
     ) {}
 
     public async updateOrderPay(updateOrderPayReqDTO: UpdateOrderPayReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.updateOrderPay.name, updateOrderPayReqDTO);
         try {
             return await this.orderPayRepository.updateOrderPay(updateOrderPayReqDTO);
         } catch (error) {

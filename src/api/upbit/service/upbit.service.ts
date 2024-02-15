@@ -34,6 +34,7 @@ export class UpbitService {
      * @returns {string} SetUpbitJwtResDTO.token - The JWT retrieved from the cache manager.
      */
     public async getUpbitJwt(): Promise<SetUpbitJwtResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getUpbitJwt.name);
         try {
             const token = await this.cacheManager.get('token');
             return plainToInstance(SetUpbitJwtResDTO, { token }, { exposeUnsetFields: false });
@@ -50,6 +51,7 @@ export class UpbitService {
      * @param {string} setUpbitJwtReqDTO.token - The JWT that needs to be stored in the cache manager.
      */
     public async setUpbitJwt(setUpbitJwtReqDTO: SetUpbitJwtReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.setUpbitJwt.name, setUpbitJwtReqDTO);
         try {
             await this.cacheManager.set('token', setUpbitJwtReqDTO.token, 0);
         } catch (error) {
@@ -65,6 +67,7 @@ export class UpbitService {
      * @returns {number} GetKrwAmountResDTO.amount - The rounded-down KRW balance.
      */
     public async getKrwAmount(): Promise<GetKrwAmountResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getKrwAmount.name);
         try {
             const upbitGetRequestReqDTO = plainToInstance(UpbitGetRequestReqDTO, { endpoint: '/accounts', query: '' }, { exposeUnsetFields: false });
             const response = await this.axiosHelper.upbitGetRequest(upbitGetRequestReqDTO);
@@ -84,6 +87,7 @@ export class UpbitService {
      * @returns {number} GetMaticPriceResDTO.token_price - The price of MATIC in KRW.
      */
     public async getMaticPrice(): Promise<GetMaticPriceResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getMaticPrice.name);
         try {
             const upbitGetRequestReqDTO = plainToInstance(UpbitGetRequestReqDTO, { endpoint: '/ticker', query: 'markets=KRW-MATIC' }, { exposeUnsetFields: false });
             const [response] = await this.axiosHelper.upbitGetRequest(upbitGetRequestReqDTO);
@@ -105,6 +109,7 @@ export class UpbitService {
      * @returns {DepositList[]} GetTransactionFromAddressResDTO.depositsListWithFromAddress - List of deposit transactions enriched with 'from' address.
      */
     public async getTransactionFromAddress(getTransactionFromAddressReqDTO: GetTransactionFromAddressReqDTO): Promise<GetTransactionFromAddressResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getTransactionFromAddress.name, getTransactionFromAddressReqDTO);
         const token = await this.getUpbitJwt();
         const depositsListWithFromAddress: DepositList[] = [];
 
@@ -137,6 +142,7 @@ export class UpbitService {
      * @returns {DepositList[]} GetRecentUpbitMaticDepositsResDTO.recentDepositList - List of recent MATIC deposit transactions from Upbit.
      */
     public async getRecentUpbitMaticDeposits(): Promise<GetRecentUpbitMaticDepositsResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getRecentUpbitMaticDeposits.name);
         try {
             const upbitGetRequestReqDTO = plainToInstance(UpbitGetRequestReqDTO, { endpoint: '/deposits', query: 'currency=MATIC' }, { exposeUnsetFields: false });
             const response = await this.axiosHelper.upbitGetRequest(upbitGetRequestReqDTO);
@@ -162,6 +168,7 @@ export class UpbitService {
      * @param {string} withdrawReqDTO.address - Destination address for the withdrawal.
      */
     public async withdraw(withdrawReqDTO: WithdrawReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.withdraw.name, withdrawReqDTO);
         const body = {
             currency: withdrawReqDTO.currency,
             net_type: 'MATIC',

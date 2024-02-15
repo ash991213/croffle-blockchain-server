@@ -18,6 +18,7 @@ export class PayService {
     ) {}
 
     public async insertPay(insertPayReqDTO: InsertPayReqDTO): Promise<InsertPayResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.insertPay.name, insertPayReqDTO);
         try {
             const insertData = await this.payRepository.insertPay(insertPayReqDTO);
             return plainToInstance(InsertPayResDTO, { pay: insertData }, { exposeUnsetFields: false });

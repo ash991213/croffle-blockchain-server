@@ -24,8 +24,8 @@ export class CustomLogger extends Logger {
         super.log(`[VERBOSE] [${context}] ${message}`);
     }
 
-    logMethodEntry(className: string, methodName: string, data: any) {
-        super.log(`Class : ${className}, Method: ${methodName}, Data: ${JSON.stringify(data)}`);
+    logMethodEntry(className: string, methodName: string, data?: any) {
+        data ? super.log(`Class : ${className}, Method: ${methodName}, Data: ${JSON.stringify(data)}`) : super.log(`Class : ${className}, Method: ${methodName}`);
     }
 
     logError(className: string, methodName: string, error: any) {

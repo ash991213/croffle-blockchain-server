@@ -14,6 +14,8 @@ export class ConsumerService {
 
     @SqsMessageHandler(process.env.AWS_SQS_NAME, false)
     async handleMessage(message: AWS.SQS.Message) {
+        this.logger.logMethodEntry(this.constructor.name, this.handleMessage.name, message);
+
         const obj: any = JSON.parse(message.Body) as {
             message: string;
             date: string;

@@ -18,6 +18,7 @@ export class ProducerService {
     ) {}
 
     public async sendMessage(body: any) {
+        this.logger.logMethodEntry(this.constructor.name, this.sendMessage.name, body);
         const message: any = JSON.stringify(body);
 
         try {
