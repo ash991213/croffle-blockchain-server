@@ -22,6 +22,7 @@ export class Web3Service {
      * @returns {number} GetTotalSupplyResDTO.total_supply - Total supply of the token.
      */
     public async getTotalSupply(): Promise<GetTotalSupplyResDTO> {
+        this.logger.logMethodEntry(this.constructor.name, this.getTotalSupply.name);
         try {
             const total_supply = await this.ethersHelper.getTotalSupply();
             return plainToInstance(GetTotalSupplyResDTO, { total_supply }, { exposeUnsetFields: false });
@@ -40,6 +41,7 @@ export class Web3Service {
      *
      */
     public async adjustTotalSupply(adjustTotalSupplyReqDTO: AdjustTotalSupplyReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.adjustTotalSupply.name, adjustTotalSupplyReqDTO);
         try {
             await this.ethersHelper.adjustTotalSupply(adjustTotalSupplyReqDTO);
         } catch (error) {
@@ -55,6 +57,7 @@ export class Web3Service {
      * @param {DepositList} TransferToUserReqDTO.deposit - The deposit details for which tokens need to be transferred.
      */
     public async transferToUser(transferToUserReqDTO: TransferToUserReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.transferToUser.name, transferToUserReqDTO);
         try {
             await this.ethersHelper.transferToUser(transferToUserReqDTO);
         } catch (error) {
@@ -70,6 +73,7 @@ export class Web3Service {
      * @param {string} TransferToTotalSupplyManagerReqDTO.amount - The amount of tokens to transfer to the Total Supply Manager.
      */
     public async transferToTotalSupplyManager(transferToTotalSupplyManagerReqDTO: TransferToTotalSupplyManagerReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.transferToTotalSupplyManager.name, transferToTotalSupplyManagerReqDTO);
         try {
             await this.ethersHelper.transferToTotalSupplyManager(transferToTotalSupplyManagerReqDTO);
         } catch (error) {

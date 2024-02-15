@@ -18,6 +18,7 @@ export class OrderService {
     ) {}
 
     public async findOrderWithOrderPay(findOrderWithOrderPayReqDTO: FindOrderWithOrderPayReqDTO): Promise<Order> {
+        this.logger.logMethodEntry(this.constructor.name, this.findOrderWithOrderPay.name, findOrderWithOrderPayReqDTO);
         try {
             return await this.orderRepository.findOrderWithOrderPay(findOrderWithOrderPayReqDTO);
         } catch (error) {
