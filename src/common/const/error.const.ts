@@ -21,6 +21,7 @@ export const GET_TOTALSUPPLY_FAILED: Res = { code: 2002, message: '총 발행량
 export const ADJUST_TOTALSUPPLY_FAILED: Res = { code: 2003, message: '총 발행량을 조절하는데 실패하였습니다.' };
 export const TRANSFER_TO_USER_FAILED: Res = { code: 2004, message: '사용자에게 토큰을 전송하는데 실패하였습니다.' };
 export const TRANSFER_TO_TOTALSUPPLY_MANAGER_FAILED: Res = { code: 2005, message: '총 공급량 관리자에게 토큰을 전송하는데 실패하였습니다.' };
+export const TRANSFER_FOR_REFUND_FAILED: Res = { code: 2005, message: '환불에 대한 토큰을 전송하는데 실패하였습니다.' };
 
 // * upbit
 export const GET_ACCESS_TOKEN_FAILED: Res = { code: 3001, message: 'Upbit Access 토큰을 조회하는데 실패하였습니다.' };
@@ -33,3 +34,4 @@ export const TOKEN_WITHDRAW_FAILED: Res = { code: 3007, message: '토큰 출금�
 
 // * aws sqs
 export const AWS_SEND_MESSAGE_FAILED: Res = { code: 4001, message: 'AWS SQS에 메시지를 전송하는 데 실패하였습니다.' };
+export const AWS_RECEIVE_MESSAGE_FAILED: Res = { code: 4002, message: 'AWS SQS에서 메시지를 수신하는 데 실패하였습니다.' };
