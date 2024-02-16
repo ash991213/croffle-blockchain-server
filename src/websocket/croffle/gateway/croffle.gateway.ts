@@ -15,6 +15,7 @@ import { AccountsService } from 'src/api/accounts/service/accounts.service';
 import { PayService } from 'src/api/pay/service/pay.service';
 import { UpbitService } from 'src/api/upbit/service/upbit.service';
 import { Web3Service } from 'src/api/web3/service/web3.service';
+import { ProducerService } from 'src/api/producer/service/producer.service';
 
 import { CURRENCY, PayStatus, TransactionStatus } from 'src/common/const/enum.const';
 
@@ -27,7 +28,7 @@ import { GetTotalWithdrawAmountForTokensReqDTO, InsertRefundInformationReqDTO } 
 import { InsertPayReqDTO } from 'src/api/pay/dto/pay.req.dto';
 import { FindOrderWithOrderPayReqDTO } from 'src/api/order/dto/order.req.dto';
 import { UpdateOrderPayReqDTO } from 'src/api/orderPay/dto/orderPay.req.dto';
-
+import { SendMessageReqDTO } from 'src/api/producer/dto/producer.dto';
 import { GetWalletInfoResDTO } from 'src/api/accounts/dto/accounts.res.dto';
 import { InsertPayResDTO } from 'src/api/pay/dto/pay.res.dto';
 
@@ -46,6 +47,7 @@ export class CroffleGateway implements OnModuleInit {
         private readonly payService: PayService,
         private readonly upbitService: UpbitService,
         private readonly web3Service: Web3Service,
+        private readonly producerService: ProducerService,
     ) {}
 
     @WebSocketServer() server: Server;
@@ -141,7 +143,6 @@ export class CroffleGateway implements OnModuleInit {
                 await this.orderPayService.updateOrderPay(updateOrderPayReqDTO);
 
                 if (findOrderWithOrderPayResDTO.orderPay.pay_price + Number(ethers.formatEther(value)) > findOrderWithOrderPayResDTO.orderPay.total_price) {
-                    // TODO : 초과 토큰 환불 추가
                     const exceedAmount = findOrderWithOrderPayResDTO.orderPay.pay_price + Number(ethers.formatEther(value)) - findOrderWithOrderPayResDTO.orderPay.total_price;
 
                     const exceedAmountInsertPayReqDTO = plainToInstance(
@@ -160,6 +161,15 @@ export class CroffleGateway implements OnModuleInit {
                     );
 
                     await this.payService.insertPay(exceedAmountInsertPayReqDTO);
+
+                    const sendMessageReqDTO = plainToInstance(SendMessageReqDTO, {
+                        from_address: to,
+                        to_address: from,
+                        txid: event.log.transactionHash,
+                        amount: exceedAmount,
+                    });
+
+                    await this.producerService.sendMessage(sendMessageReqDTO);
                 }
             }
         });

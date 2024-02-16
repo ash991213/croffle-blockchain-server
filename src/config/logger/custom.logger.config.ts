@@ -31,17 +31,18 @@ export class CustomLogger extends Logger {
     logError(className: string, methodName: string, error: any) {
         // 에러 메시지 추출
         const errorMessage = `Error Message: ${error.message}`;
+        const errorMethod = `Error Method : ${methodName}`;
 
         // 스택 트레이스에서 첫 번째 라인 추출 및 정리
         const firstStackTraceLine = error.stack.split('\n')[1].trim();
-        const simplifiedStackTrace = firstStackTraceLine.replace(/\s+at\s+/, ''); // 'at'과 공백 제거
+        const simplifiedStackTrace = firstStackTraceLine.replace(/\s+at\s+/, '');
 
         // 에러 발생 위치 추출
         const errorLocationMatch = simplifiedStackTrace.match(/\((.*?):(\d+):(\d+)\)$/);
-        const errorLocation = errorLocationMatch ? `Location: ${errorLocationMatch[1]}:${errorLocationMatch[2]}` : 'Location: unavailable';
+        const errorLocation = `Error Location : ${errorLocationMatch ? `Location: ${errorLocationMatch[1]}:${errorLocationMatch[2]}` : 'Location: unavailable'}`;
 
         // 최종 로그 메시지 구성
-        const logMessage = `Error Method : ${methodName} | ${errorMessage} \n ${errorLocation}`;
+        const logMessage = `${errorMethod} | ${errorMessage} | ${errorLocation}`;
 
         if (this.environment === 'development') {
             // 개발 환경에서는 전체 스택 트레이스를 디버그 레벨로 로깅

@@ -16,12 +16,31 @@ import { PayModule } from 'src/api/pay/pay.module';
 import { UpbitModule } from 'src/api/upbit/upbit.module';
 import { Web3Module } from 'src/api/web3/web3.module';
 import { WithdrawModule } from 'src/api/withdraw/withdraw.module';
+import { ProducerModule } from './api/producer/producer.module';
+
 import { CroffleGatewayModule } from 'src/websocket/croffle/croffle.gateway.module';
 
 import { HealthController } from 'src/api/health.controller';
+import { ConsumerModule } from './api/consumer/consumer.module';
 
 @Module({
-    imports: [EnvConfigModule, DatabaseModule, CustomLoggerModule, ScheduleModule.forRoot(), AccountsModule, DepositModule, OrderModule, OrderPayModule, PayModule, UpbitModule, Web3Module, WithdrawModule, CroffleGatewayModule],
+    imports: [
+        EnvConfigModule,
+        DatabaseModule,
+        CustomLoggerModule,
+        ScheduleModule.forRoot(),
+        AccountsModule,
+        DepositModule,
+        OrderModule,
+        OrderPayModule,
+        PayModule,
+        UpbitModule,
+        Web3Module,
+        WithdrawModule,
+        ProducerModule,
+        ConsumerModule,
+        CroffleGatewayModule,
+    ],
     controllers: [HealthController],
     providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }, Logger],
 })
