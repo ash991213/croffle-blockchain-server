@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { SqsModule } from '@ssut/nestjs-sqs';
 
 import { CustomLoggerModule } from 'src/module/custom.logger.module';
+import { Web3Module } from 'src/api/web3/web3.module';
 
 import { ConfigService } from '@nestjs/config';
 import { ConsumerService } from 'src/api/consumer/service/consumer.service';
@@ -31,6 +32,7 @@ import * as AWS from 'aws-sdk';
                 };
             },
         }),
+        Web3Module,
     ],
     providers: [ConsumerService],
     exports: [ConsumerService],

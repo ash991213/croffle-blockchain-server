@@ -4,10 +4,10 @@ import { ConfigService } from '@nestjs/config';
 
 import { plainToInstance } from 'class-transformer';
 import { ConnectContractWithWalletReqDTO, SendTransactionReqDTO } from 'src/helper/ethers/dto/ethers.req.dto';
-import { AdjustTotalSupplyReqDTO, TransferToTotalSupplyManagerReqDTO, TransferToUserReqDTO } from 'src/api/web3/dto/web3.req.dto';
+import { AdjustTotalSupplyReqDTO, TransferForRefundReqDTO, TransferToTotalSupplyManagerReqDTO, TransferToUserReqDTO } from 'src/api/web3/dto/web3.req.dto';
 
 import { ResImpl } from 'src/common/res/res.implement';
-import { ADJUST_TOTALSUPPLY_FAILED, GET_TOTALSUPPLY_FAILED, SEND_TRANSACTION_FAILED, TRANSFER_TO_TOTALSUPPLY_MANAGER_FAILED, TRANSFER_TO_USER_FAILED } from 'src/common/const/error.const';
+import { ADJUST_TOTALSUPPLY_FAILED, GET_TOTALSUPPLY_FAILED, SEND_TRANSACTION_FAILED, TRANSFER_FOR_REFUND_FAILED, TRANSFER_TO_TOTALSUPPLY_MANAGER_FAILED, TRANSFER_TO_USER_FAILED } from 'src/common/const/error.const';
 
 import { METHODS } from 'src/common/const/enum.const';
 
@@ -26,6 +26,7 @@ export class EthersHelper {
     private readonly CROFFLE_TOTALSUPPLY_MANAGER: string = this.configService.get<string>('CROFFLE_TOTALSUPPLY_MANAGER');
     private readonly CROFFLE_TOTALSUPPLY_MANAGER_PRIVATEKEY: string = this.configService.get<string>('CROFFLE_TOTALSUPPLY_MANAGER_PRIVATEKEY');
     private readonly CROFFLE_PROPOSED_OWNER_PRIVATEKEY: string = this.configService.get<string>('CROFFLE_PROPOSED_OWNER_PRIVATEKEY');
+    private readonly CROFFLE_PAYMENT_WALLET_PRIVATEKEY: string = this.configService.get<string>('CROFFLE_PAYMENT_WALLET_PRIVATEKEY');
 
     private readonly CROFFLE_CHAIN_RPC: string = this.configService.get<string>('CROFFLE_CHAIN_RPC');
     private readonly PROXY_CONTRACT: string = this.configService.get<string>('PROXY_CONTRACT');
@@ -115,6 +116,25 @@ export class EthersHelper {
         } catch (error) {
             this.logger.logError(this.constructor.name, this.transferToTotalSupplyManager.name, error);
             throw new ResImpl(TRANSFER_TO_TOTALSUPPLY_MANAGER_FAILED);
+        }
+    }
+
+    public async transferForRefund(transferForRefundReqDTO: TransferForRefundReqDTO) {
+        const sendTransactionReqDTO = plainToInstance(
+            SendTransactionReqDTO,
+            {
+                privateKey: this.CROFFLE_PAYMENT_WALLET_PRIVATEKEY,
+                method: METHODS.TRANSFER,
+                params: [transferForRefundReqDTO.to_address, ethers.parseUnits(transferForRefundReqDTO.amount, 'ether')],
+            },
+            { exposeUnsetFields: false },
+        );
+
+        try {
+            await this.sendTransaction(sendTransactionReqDTO);
+        } catch (error) {
+            this.logger.logError(this.constructor.name, this.transferToTotalSupplyManager.name, error);
+            throw new ResImpl(TRANSFER_FOR_REFUND_FAILED);
         }
     }
 }

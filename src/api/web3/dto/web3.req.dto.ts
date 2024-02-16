@@ -26,3 +26,14 @@ export class TransferToTotalSupplyManagerReqDTO {
     @IsString()
     amount: string;
 }
+
+export class TransferForRefundReqDTO {
+    @Expose({ name: 'to_address' })
+    @IsString()
+    to_address: string;
+
+    @Expose({ name: 'amount' })
+    @Type(() => String)
+    @IsString()
+    amount: string;
+}

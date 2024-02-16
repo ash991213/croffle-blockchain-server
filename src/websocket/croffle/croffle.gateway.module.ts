@@ -16,6 +16,7 @@ import { OrderPayModule } from 'src/api/orderPay/orderPay.module';
 import { WithdrawModule } from 'src/api/withdraw/withdraw.module';
 import { UpbitModule } from 'src/api/upbit/upbit.module';
 import { Web3Module } from 'src/api/web3/web3.module';
+import { ProducerModule } from 'src/api/producer/producer.module';
 
 import { CroffleGateway } from 'src/websocket/croffle/gateway/croffle.gateway';
 
@@ -35,6 +36,7 @@ import { PayModule } from 'src/api/pay/pay.module';
         WithdrawModule,
         UpbitModule,
         Web3Module,
+        ProducerModule,
     ],
     providers: [AxiosHelper, CroffleGateway],
 })

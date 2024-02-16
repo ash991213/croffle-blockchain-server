@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EthersHelper } from 'src/helper/ethers/ethers.helper';
 
 import { plainToInstance } from 'class-transformer';
-import { AdjustTotalSupplyReqDTO, TransferToTotalSupplyManagerReqDTO, TransferToUserReqDTO } from 'src/api/web3/dto/web3.req.dto';
+import { AdjustTotalSupplyReqDTO, TransferForRefundReqDTO, TransferToTotalSupplyManagerReqDTO, TransferToUserReqDTO } from 'src/api/web3/dto/web3.req.dto';
 import { GetTotalSupplyResDTO } from 'src/api/web3/dto/web3.res.dto';
 import { CustomLogger } from 'src/config/logger/custom.logger.config';
 
@@ -78,6 +78,16 @@ export class Web3Service {
             await this.ethersHelper.transferToTotalSupplyManager(transferToTotalSupplyManagerReqDTO);
         } catch (error) {
             this.logger.logError(this.constructor.name, this.transferToTotalSupplyManager.name, error);
+            throw error;
+        }
+    }
+
+    public async transferForRefund(transferForRefundReqDTO: TransferForRefundReqDTO): Promise<void> {
+        this.logger.logMethodEntry(this.constructor.name, this.transferForRefund.name, transferForRefundReqDTO);
+        try {
+            await this.ethersHelper.transferForRefund(transferForRefundReqDTO);
+        } catch (error) {
+            this.logger.logError(this.constructor.name, this.transferForRefund.name, error);
             throw error;
         }
     }
